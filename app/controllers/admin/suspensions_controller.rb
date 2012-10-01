@@ -15,7 +15,8 @@ class Admin::SuspensionsController < Admin::BaseController
       @user.unsuspend!
       redirect_to admin_users_path
     end
-    flash[:notice] = "#{@user.name} is now #{@user.suspended? ? "Suspended" : "Active"}"
+    state = @user.suspended? ? "Suspended" : "Active"
+    flash[:notice] = "#{@user.name} is now #{state}"
   end
 
   private

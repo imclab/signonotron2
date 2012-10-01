@@ -21,7 +21,9 @@ class PermissionUpdater
 
   def self.on_success
     Proc.new do |user, application|
-      user.permissions.detect { |perm| perm.application_id == application.id }.synced!
+      user.permissions.detect { |perm|
+        perm.application_id == application.id
+      }.synced!
     end
   end
 end

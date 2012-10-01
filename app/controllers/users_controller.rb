@@ -6,7 +6,8 @@ class UsersController < ApplicationController
     relevant_permission.synced!
     respond_to do |format|
       format.json do
-        render json: current_resource_owner.to_sensible_json(application_making_request)
+        render json: current_resource_owner.to_sensible_json(
+          application_making_request)
       end
     end
   end
@@ -16,7 +17,9 @@ class UsersController < ApplicationController
 
   def update
     params[:user] ||= {}
-    password_params = params[:user].symbolize_keys.keep_if { |k, v| [:current_password, :password, :password_confirmation].include?(k) }
+    password_params = params[:user].symbolize_keys.keep_if do |k, v|
+      [:current_password, :password, :password_confirmation].include?(k)
+    end
     if current_user.update_with_password(password_params)
       flash[:notice] = t(:updated, :scope => 'devise.passwords')
       sign_in(current_user, :bypass => true)

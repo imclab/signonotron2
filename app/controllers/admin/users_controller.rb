@@ -13,7 +13,11 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def update
-    if @user.update_attributes(translate_faux_signin_permission(params[:user]), as: :admin)
+    updated = @user.update_attributes(
+      translate_faux_signin_permission(params[:user]),
+      as: :admin
+    )
+    if updated
       @user.permissions.reload
       results = PermissionUpdater.new(@user, @user.applications_used).attempt
       @successes, @failures = results[:successes], results[:failures]

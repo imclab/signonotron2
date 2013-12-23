@@ -31,6 +31,12 @@ namespace :users do
     puts "#{count} users were reminded about account suspension"
   end
 
+  desc "Suspend users who have not signed-in since SUSPENSION_THRESHOLD_PERIOD"
+  task :suspend_inactive => :environment do
+    count = InactiveUsersSuspender.new.suspend
+    puts "#{count} users were suspended because they had not logged in since #{suspension_threshold_period} days"
+  end
+
   desc "Suspend a user's access to the site (specify email in environment)"
   task :suspend => :environment do
     raise "Requires email specified in environment" unless ENV['email']

@@ -6,10 +6,14 @@ set :output, {:error => 'log/cron.error.log', :standard => 'log/cron.log'}
 # We need Rake to use our own environment
 job_type :rake, "cd :path && govuk_setenv signon bundle exec rake :task :output"
 
-every :day, at: '3am' do
-  rake "organisations:fetch"
+every :day, at: '1am' do
+  rake "users:suspend_inactive SUSPENSION_THRESHOLD_PERIOD=45"
 end
 
 every :day, at: '2am' do
   rake "users:send_suspension_reminders"
+end
+
+every :day, at: '3am' do
+  rake "organisations:fetch"
 end
